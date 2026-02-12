@@ -1,20 +1,20 @@
 <?php
-function validarAnimal($Animal) {
-    return !empty($Animal);
+function validarAnimal($animal) {
+    return !empty($animal);
 }
 
 function validarApp($app) {
-    return !empty($app) ;
+    return !empty($app)&& is_array($app) ;
 }
 
 function validarEdad($edad) {
-    return !empty($edad) && is_numeric($edad) && $edad >= 15 && $edad <= 99;
+    return !empty($edad) ;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $animal    = $_POST['animal'];
-    $app[]    = $_POST['app'];
+    $app    = $_POST['app'] ?? [];
     $edad      = $_POST['edad']; 
 
     $errores = [];
@@ -32,13 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($errores)) {
-        echo "<p><strong>Animal Favorito: </strong> $animal</p><br>";
-        echo "<p><strong>App usadas: </strong> $animal</p><br>";
+        echo "<p><strong>Animal Favorito: </strong> $animal</p>";
+        echo "<p><strong>Apps usadas: </strong></p>";
         echo "<ul>";
-        foreach ($_POST["apps"] as $app) {
-            echo "<li>- $app </li>";
+        foreach ($app as $unaapp) {
+            echo "<li> $unaapp </li>";
         }
-        echo "<p><strong>Animal rango de edad: </strong> $edad</p><br>";
+        echo "</ul>";
+        echo "<p><strong>Rango de edad: </strong> $edad</p><br>";
 
     } else {
         echo "<h3>Errores:</h3>";

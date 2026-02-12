@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 
     <title>Formulario de preferencias personales</title>
-    <link rel="stlyesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/estilos.css">
     <script src="js/validaciones.js"></script>
 </head>
 
