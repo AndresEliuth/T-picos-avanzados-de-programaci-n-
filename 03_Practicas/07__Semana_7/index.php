@@ -1,11 +1,13 @@
 <?php
-// Función para obtener el estado de cada tarea
-function obtenerEstado($archivo) {
-    if (file_exists($archivo)) {
-        return trim(file_get_contents($archivo));
-    }
-    return "detenido";
-}
+require_once "conexion.php";
+$conexion = conectar();
+
+/*
+Obtenemos los logs automáticamente
+Esto hará que la tabla se actualice sola
+sin necesidad de ir a otra página
+*/
+$logs = $conexion->query("SELECT * FROM logs ORDER BY fecha DESC")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -13,84 +15,82 @@ function obtenerEstado($archivo) {
 <head>
     <title>Control de Tareas</title>
 </head>
-
 <body>
 
-<h2>CONTROL DE TAREAS DEL SISTEMA</h2>
+<h2>CONTROL DE TAREAS</h2>
 
-<table border="1" cellpadding="10" cellspacing="0">
-    <tr>
-        <th>Tarea</th>
-        <th>Descripción</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-    </tr>
+<!-- ===== TAREA 1 ===== -->
+<h3>Tarea 1</h3>
 
-    <!-- TAREA 1 -->
-    <tr>
-        <td>1</td>
-        <td>Generar reporte</td>
-        <td><?php echo obtenerEstado("estado_tarea1.txt"); ?></td>
-        <td>
+<form action="iniciar.php" method="post" style="display:inline;">
+    <input type="hidden" name="id" value="1">
+    <button type="submit">Iniciar</button>
+</form>
 
-            <!-- BOTÓN INICIAR -->
-            <form action="iniciar1.php" method="post" style="display:inline;">
-                <button type="submit">Iniciar</button>
-            </form>
+<form action="detener.php" method="post" style="display:inline;">
+    <input type="hidden" name="id" value="1">
+    <button type="submit">Detener</button>
+</form>
 
-            <!-- BOTÓN DETENER -->
-            <form action="detener.php" method="post" style="display:inline;">
-                <input type="hidden" name="tarea" value="1">
-                <button type="submit">Detener</button>
-            </form>
+<br><br>
 
-        </td>
-    </tr>
+<!-- ===== TAREA 2 ===== -->
+<h3>Tarea 2</h3>
 
-    <!-- TAREA 2 -->
-    <tr>
-        <td>2</td>
-        <td>Procesar lote</td>
-        <td><?php echo obtenerEstado("estado_tarea2.txt"); ?></td>
-        <td>
+<form action="iniciar.php" method="post" style="display:inline;">
+    <input type="hidden" name="id" value="2">
+    <button type="submit">Iniciar</button>
+</form>
 
-            <form action="iniciar2.php" method="post" style="display:inline;">
-                <button type="submit">Iniciar</button>
-            </form>
+<form action="detener.php" method="post" style="display:inline;">
+    <input type="hidden" name="id" value="2">
+    <button type="submit">Detener</button>
+</form>
 
-            <form action="detener.php" method="post" style="display:inline;">
-                <input type="hidden" name="tarea" value="2">
-                <button type="submit">Detener</button>
-            </form>
+<br><br>
 
-        </td>
-    </tr>
-</table>
+<h3>Limpieza </h3>
+<form action="limpiar.php" method="post">
+    <button type="submit">Limpiar registros</button>
+</form>
 
-<br>
+<br><br>
 
-<h3>REGISTRO DE ACTIVIDAD</h3>
+<!-- ===== RESULTADOS AUTOMÁTICOS ===== -->
+<h3>Registro de Actividad</h3>
 
-<table border="1" cellpadding="8" cellspacing="0">
-    <tr>
-        <th>Fecha y Hora</th>
-        <th>Evento</th>
-    </tr>
+<table border="1">
+<tr>
+    <th>Fecha</th>
+    <th>Tarea</th>
+    <th>Evento</th>
+</tr>
 
-    <?php
-    if (file_exists("log.txt")) {
-        $lineas = file("log.txt");
+<?php
+/*
+FOREACH:
+Recorre todos los registros (logs)
 
-        foreach ($lineas as $linea) {
-            $partes = explode(" - ", $linea, 2);
+$l representa cada fila
+*/
+foreach ($logs as $l):
+?>
+<tr>
 
-            echo "<tr>";
-            echo "<td>" . $partes[0] . "</td>";
-            echo "<td>" . $partes[1] . "</td>";
-            echo "</tr>";
-        }
-    }
-    ?>
+    <!-- Fecha bonita -->
+    <td>
+        <?php echo date("d/m/Y H:i:s", strtotime($l['fecha'])); ?>
+    </td>
+
+    <!-- ID de tarea -->
+    <td><?php echo $l['tarea_id']; ?></td>
+
+    <!-- Evento -->
+    <td><?php echo $l['evento']; ?></td>
+
+</tr>
+<?php endforeach; ?>
+
 </table>
 
 </body>
