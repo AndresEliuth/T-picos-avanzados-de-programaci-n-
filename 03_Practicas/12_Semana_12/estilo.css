@@ -1,0 +1,68 @@
+:root {
+    --primary: #3498db;
+    --dark: #2c3e50;
+    --nav-bg: #34495e; /* Color diferente para el menú */
+    --bg: #f4f4f4;
+}
+
+body { font-family: Arial, sans-serif; margin: 0; background: var(--bg); }
+
+/* Header principal */
+header { 
+    background: var(--dark); 
+    color: white; 
+    padding: 15px 20px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Botón Hamburguesa */
+.menu-btn {
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--primary); /* Color brillante para que sea visible */
+}
+
+/* Menú Desplegable (Móvil) */
+nav {
+    display: none; /* Oculto por defecto */
+    background: var(--nav-bg);
+    width: 100%;
+}
+
+/* Clase que se activa con el clic */
+nav.open { display: flex; flex-direction: column; }
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+nav a.active { background: var(--primary); }
+
+/* Contenido */
+main { padding: 15px; max-width: 500px; margin: 0 auto; }
+
+.card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn {
+    display: block;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    border: none;
+    width: 100%;
+    font-weight: bold;
+}
